@@ -7,7 +7,7 @@ import {
 import { RootState, AppDispatch } from "./redux/store";
 
 import "./App.scss";
-import Button from "./ui/Button/Button";
+import Button from "./ui/Button";
 import Pokemon from "./components/Pokemon";
 
 const App: React.FC = () => {
@@ -22,11 +22,19 @@ const App: React.FC = () => {
     }
   }, [status, dispatch]);
 
+  const handleClearOrReset = (): void => {
+    if (data.length > 0) {
+      dispatch(clearCollection());
+    } else {
+      dispatch(fetchPokemonList());
+    }
+  };
+
   return (
     <div className="pokemon-app">
       <h1>Pokémon Collection</h1>
       <p>
-        Please click on any pokemon below to fetch more details as the PokeAPI
+        Please click on any Pokémon below to fetch more details as the PokéAPI
         returns only the names and URLs.
       </p>
       <p>
@@ -34,8 +42,8 @@ const App: React.FC = () => {
         APIs, do we?
       </p>
       <br />
-      <Button onClick={() => dispatch(clearCollection())}>
-        Clear Collection
+      <Button onClick={handleClearOrReset}>
+        {data.length ? "Clear Collection" : "Refetch Pokémons"}
       </Button>
       {status === "loading" && <p>Loading...</p>}
       {status === "failed" && <p>Error: {error}</p>}
