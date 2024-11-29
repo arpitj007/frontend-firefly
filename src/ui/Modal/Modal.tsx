@@ -3,6 +3,9 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { ModalState } from "./useModal";
 import { ModalContext } from "./ModalContext";
 import { NOOP } from "../../utils/primary";
+import Button from "../Button";
+
+import "./Modal.scss";
 
 interface ModalProps extends RadixDialog.DialogContentProps {
   /**
@@ -23,10 +26,10 @@ interface ModalProps extends RadixDialog.DialogContentProps {
   /**
    * Container for the portal
    */
-  container: HTMLElement;
+  container?: HTMLElement;
 }
 
-export const Modal = forwardRef(
+const Modal = forwardRef(
   (
     {
       showCloseIcon,
@@ -46,20 +49,23 @@ export const Modal = forwardRef(
       <RadixDialog.Root onOpenChange={handleOpenChange} open={dialog.isOpen}>
         <ModalContext.Provider value={dialog}>
           <RadixDialog.Portal container={container}>
+            <RadixDialog.Overlay className="dialog-overlay" />
             <RadixDialog.Content
               onEscapeKeyDown={shouldHideOnOverlayClick ? dialog.hide : NOOP}
               onPointerDownOutside={
                 shouldHideOnOverlayClick ? dialog.hide : NOOP
               }
               ref={ref}
+              className="dialog-content"
               {...restProps}
             >
               <div className="modal-header">
-                <RadixDialog.Title asChild>{title}</RadixDialog.Title>
+                <RadixDialog.Title>{title}</RadixDialog.Title>
                 {showCloseIcon === true && (
-                  <button onClick={dialog.hide} type="button">
+                  <Button onClick={dialog.hide} type="button">
+                    {/* Using emoji because adding an icon lib will increase the package size. This is the only icon I need anyway */}
                     ⛌
-                  </button>
+                  </Button>
                 )}
               </div>
               <div className="modal-body">{children}</div>
@@ -70,3 +76,5 @@ export const Modal = forwardRef(
     );
   }
 );
+
+export default Modal;
