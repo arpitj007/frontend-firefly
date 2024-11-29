@@ -1,1 +1,21 @@
+.pokemon-app {
+  width: 1080px;
+}
 
+.pokemon-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 columns */
+  grid-auto-rows: auto;
+  gap: 10px;
+  padding: 20px;
+  border-image: linear-gradient(
+      to right,
+      var(--color-primary),
+      var(--color-secondary),
+      var(--color-primary)
+    )
+    1;
+  border-style: solid;
+  border-width: 4px;
+  border-style: solid;
+}
