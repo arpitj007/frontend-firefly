@@ -77,7 +77,7 @@ const App: React.FC = () => {
         )}
         <Modal
           dialog={modal}
-          title="Example title"
+          title={currentlySelectedData?.name}
           showCloseIcon={true}
           shouldHideOnOverlayClick={true}
           modalCloseAction={() => dispatch(clearSelected())}

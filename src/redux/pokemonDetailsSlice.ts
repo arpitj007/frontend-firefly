@@ -26,15 +26,31 @@ interface Stat {
   };
 }
 
+interface Sprite {
+  front_default: string;
+  back_shiny: string;
+  back_default: string;
+  front_shiny: string;
+}
+
+interface FlavorText {
+  flavor_text: string;
+  language: {
+    name: string;
+  };
+}
+
 interface PokemonDetails {
   abilities: Ability[];
   baseExperience: number;
   height: number;
   id: number;
   is_default: boolean;
+  sprites: Sprite;
   name: string;
   order: number;
   stats: Stat[];
+  flavor_text_entries: FlavorText[];
   evolution: null | string; // Could be either null or the name of the next evolution.
   evolutionUrl?: string;
   species: {

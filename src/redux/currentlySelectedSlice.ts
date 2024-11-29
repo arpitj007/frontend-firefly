@@ -24,6 +24,7 @@ const currentlySelectedSlice = createSlice({
       state.error = null;
     },
     add: (state, action) => {
+      // add works similar to update since we have implementned checks around data change
       state.data = action.payload;
       state.error = null;
     },
