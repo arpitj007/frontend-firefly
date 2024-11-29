@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import { fetchPokemonDetails } from "../redux/pokemonDetailsSlice";
 import Button from "../ui/Button";
 import { add } from "../redux/currentlySelectedSlice";
+import Loader from "../ui/Loader";
 
 interface CardProps {
   url: string;
@@ -25,6 +26,14 @@ function Card({ name }: CardProps) {
       dispatch(fetchPokemonDetails(name));
     }
   }, [status, dispatch, name, details?.name]);
+
+  if (status === "loading") {
+    return (
+      <div className="card-container">
+        <Loader />
+      </div>
+    );
+  }
 
   if (!details) return null;
 
@@ -49,20 +58,23 @@ function Card({ name }: CardProps) {
   };
 
   return (
-    <div className="card">
-      <p>
-        <strong>Abilities:</strong> {abilities}
-      </p>
-      {flavorText && (
+    <div className="card-container">
+      <div className="card">
         <p>
-          <strong>Description:</strong> {flavorText}
+          <strong>Abilities:</strong> {abilities}
         </p>
-      )}
-      <img src={details.sprites.front_default} alt={`${name}`} />
-      <img src={details.sprites.front_shiny} alt={`${name}`} />
-      <img src={details.sprites.back_default} alt={`${name}`} />
-      <img src={details.sprites.back_shiny} alt={`${name}`} />
-
+        {flavorText && (
+          <p>
+            <strong>Description:</strong> {flavorText}
+          </p>
+        )}
+        <div className="image-container">
+          <img src={details.sprites.front_default} alt={`${name}`} />
+          <img src={details.sprites.front_shiny} alt={`${name}`} />
+          <img src={details.sprites.back_default} alt={`${name}`} />
+          <img src={details.sprites.back_shiny} alt={`${name}`} />
+        </div>
+      </div>
       {details.evolution && (
         <Button onClick={handleEvolutionClick}>
           Go to Evolution: {details.evolution}

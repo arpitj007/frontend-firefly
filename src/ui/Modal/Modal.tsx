@@ -78,7 +78,9 @@ const Modal = forwardRef(
               {...restProps}
             >
               <div className="modal-header">
-                <RadixDialog.Title>{title}</RadixDialog.Title>
+                <RadixDialog.Title className="dialog-title">
+                  {title}
+                </RadixDialog.Title>
                 {showCloseIcon === true && (
                   <Button
                     onClick={() => handleClose(modalCloseAction)}
