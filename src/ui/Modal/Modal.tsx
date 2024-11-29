@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import React, { forwardRef, useCallback } from "react";
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { ModalState } from "./useModal";
 import { ModalContext } from "./ModalContext";
@@ -27,6 +27,11 @@ interface ModalProps extends RadixDialog.DialogContentProps {
    * Container for the portal
    */
   container?: HTMLElement;
+
+  /**
+   * Modal close action
+   */
+  modalCloseAction?: () => void;
 }
 
 const Modal = forwardRef(
@@ -37,13 +42,24 @@ const Modal = forwardRef(
       dialog,
       children,
       title,
+      modalCloseAction = () => {},
       container,
       ...restProps
     }: ModalProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
-    const handleOpenChange = (newOpenState: boolean) =>
-      newOpenState ? dialog.show : dialog.hide;
+    const handleOpenChange = useCallback(
+      (newOpenState: boolean) => (newOpenState ? dialog.show : dialog.hide),
+      [dialog.hide, dialog.show]
+    );
+
+    const handleClose = useCallback(
+      async (action = modalCloseAction) => {
+        action();
+        dialog.hide();
+      },
+      [dialog, modalCloseAction]
+    );
 
     return (
       <RadixDialog.Root onOpenChange={handleOpenChange} open={dialog.isOpen}>
@@ -53,7 +69,9 @@ const Modal = forwardRef(
             <RadixDialog.Content
               onEscapeKeyDown={shouldHideOnOverlayClick ? dialog.hide : NOOP}
               onPointerDownOutside={
-                shouldHideOnOverlayClick ? dialog.hide : NOOP
+                shouldHideOnOverlayClick
+                  ? () => handleClose(modalCloseAction)
+                  : NOOP
               }
               ref={ref}
               className="dialog-content"
@@ -62,7 +80,10 @@ const Modal = forwardRef(
               <div className="modal-header">
                 <RadixDialog.Title>{title}</RadixDialog.Title>
                 {showCloseIcon === true && (
-                  <Button onClick={dialog.hide} type="button">
+                  <Button
+                    onClick={() => handleClose(modalCloseAction)}
+                    type="button"
+                  >
                     {/* Using emoji because adding an icon lib will increase the package size. This is the only icon I need anyway */}
                     ⛌
                   </Button>
@@ -77,4 +98,4 @@ const Modal = forwardRef(
   }
 );
 
-export default Modal;
+export default React.memo(Modal);

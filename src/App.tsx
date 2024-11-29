@@ -1,20 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchPokemonList,
   clearCollection,
+  PokemonBase,
 } from "./redux/pokemonCollectionSlice";
 import { RootState, AppDispatch } from "./redux/store";
+import { add, clearSelected } from "./redux/currentlySelectedSlice";
 
 import "./App.scss";
 import Button from "./ui/Button";
 import Pokemon from "./components/Pokemon";
 import Modal, { useModal } from "./ui/Modal";
+import Card from "./components/Card";
 
 const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { data, status, error } = useSelector(
     (state: RootState) => state.pokemonCollection
+  );
+  const { data: currentlySelectedData } = useSelector(
+    (state: RootState) => state.currentlySelected
   );
   const modal = useModal();
 
@@ -24,13 +30,21 @@ const App: React.FC = () => {
     }
   }, [status, dispatch]);
 
-  const handleClearOrReset = (): void => {
+  const handleClearOrReset = useCallback((): void => {
     if (data.length > 0) {
       dispatch(clearCollection());
     } else {
       dispatch(fetchPokemonList());
     }
-  };
+  }, [data.length, dispatch]);
+
+  const handleExpand = useCallback(
+    (pokemon: PokemonBase) => {
+      dispatch(add(pokemon));
+      modal.show();
+    },
+    [modal, dispatch]
+  );
 
   return (
     <>
@@ -54,9 +68,8 @@ const App: React.FC = () => {
           <div className="pokemon-grid">
             {data.map((pokemon) => (
               <Pokemon
-                onClick={modal.show}
+                onClick={() => handleExpand(pokemon)}
                 name={pokemon.name}
-                url={pokemon.url}
                 key={pokemon.name}
               />
             ))}
@@ -67,9 +80,14 @@ const App: React.FC = () => {
           title="Example title"
           showCloseIcon={true}
           shouldHideOnOverlayClick={true}
+          modalCloseAction={() => dispatch(clearSelected())}
         >
-          <p>Content goes here</p>
-          <br />
+          {currentlySelectedData && (
+            <Card
+              name={currentlySelectedData.name}
+              url={currentlySelectedData.url}
+            />
+          )}
         </Modal>
       </div>
     </>

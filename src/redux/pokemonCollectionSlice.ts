@@ -1,16 +1,15 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { ApiStatus, BASE_API } from "./api";
 
-const BASE_API = "https://pokeapi.co/api/v2";
-
-interface Pokemon {
+export interface PokemonBase {
   name: string;
   url: string;
 }
 
 interface PokemonCollectionState {
-  data: Pokemon[];
-  status: "idle" | "loading" | "succeeded" | "failed";
+  data: PokemonBase[];
+  status: ApiStatus;
   error: string | null;
 }
 
@@ -50,7 +49,7 @@ const pokemonCollectionSlice = createSlice({
       })
       .addCase(
         fetchPokemonList.fulfilled,
-        (state, action: PayloadAction<Pokemon[]>) => {
+        (state, action: PayloadAction<PokemonBase[]>) => {
           state.status = "succeeded";
           state.data = action.payload;
         }

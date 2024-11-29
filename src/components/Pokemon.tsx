@@ -3,11 +3,10 @@ import "./Pokemon.scss";
 
 interface PokemonProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
-  url: string;
   className?: string;
 }
 
-function Pokemon({ name, url, className, ...restProps }: PokemonProps) {
+function Pokemon({ name, className, ...restProps }: PokemonProps) {
   return (
     <div className={classNames("pokemon", className)} {...restProps}>
       {name}
