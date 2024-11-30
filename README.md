@@ -45,3 +45,7 @@ This projected was bootstrapped in a few hours so the code quality is a bit comp
     sourcemap: true,
   },
 ```
+
+<!-- Live app -->
+
+https://frontend-firefly.vercel.app/
