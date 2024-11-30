@@ -5,8 +5,9 @@ const favoriteMap = {
   remove: "#F8C660",
 } as const;
 
-interface FavoriteStarProps extends React.ReactElement<HTMLDivElement> {
+interface FavoriteStarProps {
   type: keyof typeof favoriteMap;
+  onClick?: () => void; // Add onClick handler to props
 }
 
 function FavoriteStar({ type = "add", ...otherProps }: FavoriteStarProps) {
