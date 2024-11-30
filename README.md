@@ -6,9 +6,12 @@ Gmail - [Arpit J](mailto:gddjngr@gmail.com)
 
 - React+TS
 - Vite
-- React Router
 - Sass
 - Redux toolkit
+- Axios
+- ClassNames
+- React intersection observer
+- Redux
 
 ## Start with
 

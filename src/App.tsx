@@ -15,6 +15,7 @@ import Button from "./ui/Button";
 import Pokemon from "./components/Pokemon";
 import Modal, { useModal } from "./ui/Modal";
 import Card from "./components/Card";
+import Search from "./components/Search";
 
 const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -69,9 +70,13 @@ const App: React.FC = () => {
         APIs, do we?
       </p>
       <br />
-      <Button onClick={handleClearOrReset}>
-        {data.length ? "Clear Collection" : "Refetch Pokémons"}
-      </Button>
+      <div className="controls">
+        <Button onClick={handleClearOrReset}>
+          {data.length ? "Clear Collection" : "Refetch Pokémons"}
+        </Button>
+        <Search />
+      </div>
+
       {status === "failed" && <p>Error: {error}</p>}
       <div className="pokemon-grid">
         {/* Always render existing data */}

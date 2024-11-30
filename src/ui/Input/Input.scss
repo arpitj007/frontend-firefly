@@ -1,0 +1,47 @@
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 8px;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  background: #fff;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus-within {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 4px var(--color-secondary);
+  }
+
+  &[aria-invalid="true"] {
+    border-color: var(--color-error);
+    box-shadow: 0 0 4px var(--color-error);
+  }
+
+  // Styling for optional start icon or content
+  > *:first-child {
+    margin-right: 8px;
+    color: var(--color-primary);
+  }
+}
+
+.input {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: none;
+  outline: none;
+  background: none;
+  color: #333;
+  border-radius: 4px;
+
+  &::placeholder {
+    color: #aaa;
+  }
+
+  &:disabled {
+    background: #f5f5f5;
+    color: #bbb;
+    cursor: not-allowed;
+  }
+}
