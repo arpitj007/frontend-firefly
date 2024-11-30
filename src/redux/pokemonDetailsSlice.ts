@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ApiStatus, BASE_API } from "./api";
+import { RootState } from "./store";
 
 interface Ability {
   ability: {
@@ -53,6 +54,7 @@ interface PokemonDetails {
   flavor_text_entries: FlavorText[];
   evolution: null | string; // Could be either null or the name of the next evolution.
   evolutionUrl?: string;
+  is_favorite: boolean;
   species: {
     name: string;
     url: string;
@@ -112,6 +114,30 @@ export const fetchPokemonDetails = createAsyncThunk(
   }
 );
 
+export const toggleFavorite = createAsyncThunk(
+  "pokemonDetails/toggleFavorite",
+  async (pokemonName: string, { getState, rejectWithValue }) => {
+    const state = getState() as RootState;
+    const isFavorite = state.pokemonDetails.data?.is_favorite;
+
+    try {
+      if (isFavorite) {
+        // Call the remove favorite API
+        await axios.delete(`${BASE_API}/pokemon/fav/${pokemonName}`);
+      } else {
+        // Call the add favorite API
+        await axios.post(`${BASE_API}/pokemon/fav`, { name: pokemonName });
+      }
+
+      return !isFavorite; // Return the toggled favorite status
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data || `Failed to toggle favorite for ${pokemonName}`
+      );
+    }
+  }
+);
+
 const pokemonDetailsSlice = createSlice({
   name: "pokemonDetails",
   initialState,
@@ -136,7 +162,20 @@ const pokemonDetailsSlice = createSlice({
           state.status = "failed";
           state.error = action.payload;
         }
-      );
+      )
+      .addCase(
+        toggleFavorite.fulfilled,
+        (state, action: PayloadAction<boolean>) => {
+          state.status = "succeeded";
+          if (state.data) {
+            state.data.is_favorite = action.payload;
+          }
+        }
+      )
+      .addCase(toggleFavorite.rejected, (state, action: PayloadAction<any>) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
   },
 });
 

@@ -3,10 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "./Card.scss";
 import { AppDispatch, RootState } from "../redux/store";
-import { fetchPokemonDetails } from "../redux/pokemonDetailsSlice";
+import {
+  fetchPokemonDetails,
+  toggleFavorite,
+} from "../redux/pokemonDetailsSlice";
 import Button from "../ui/Button";
 import { add } from "../redux/currentlySelectedSlice";
 import Loader from "../ui/Loader";
+import FavoriteStar from "./FavoriteStar";
 
 interface CardProps {
   url: string;
@@ -26,6 +30,12 @@ function Card({ name }: CardProps) {
       dispatch(fetchPokemonDetails(name));
     }
   }, [status, dispatch, name, details?.name]);
+
+  const handleToggleFavorite = () => {
+    if (details) {
+      dispatch(toggleFavorite(details.name));
+    }
+  };
 
   if (status === "loading") {
     return (
@@ -63,6 +73,10 @@ function Card({ name }: CardProps) {
         <p>
           <strong>Abilities:</strong> {abilities}
         </p>
+        <FavoriteStar
+          type={details.is_favorite ? "remove" : "add"}
+          onClick={handleToggleFavorite}
+        />
         {flavorText && (
           <p>
             <strong>Description:</strong> {flavorText}

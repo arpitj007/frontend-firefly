@@ -1,0 +1,10 @@
+.favorite {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background-color: var(--base-bg);
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 8px;
+}

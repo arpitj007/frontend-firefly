@@ -15,8 +15,8 @@ function Loader() {
           <circle id="Ellipse 928" cx="30" cy="30" r="30" fill="transparent" />
           <path
             id="Subtract"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M30 14C17.2975 14 7 24.2975 7 37C7 49.7025 17.2975 60 30 60C13.4315 60 0 46.5685 0 30C0 13.4315 13.4315 0 30 0V14Z"
             fill="#f05a28"
           />
@@ -33,8 +33,8 @@ function Loader() {
           />
           <path
             id="Subtract_2"
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M30 46C42.7025 46 53 35.7025 53 23C53 10.2975 42.7025 0 30 0C46.5685 0 60 13.4315 60 30C60 46.5685 46.5685 60 30 60V46Z"
             fill="#ec008c"
           />

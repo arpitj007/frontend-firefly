@@ -34,6 +34,13 @@ const App: React.FC = () => {
   });
   // Local state to debounce lazy loading
   const [isFetching, setIsFetching] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredData = searchTerm
+    ? data.filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : data;
 
   useEffect(() => {
     if (!isFetching && isEndInView && hasMore) {
@@ -58,6 +65,10 @@ const App: React.FC = () => {
     [modal, dispatch]
   );
 
+  const handleSearch = (search: string) => {
+    setSearchTerm(search);
+  };
+
   return (
     <div className="pokemon-app">
       <h1>Pokémon Collection</h1>
@@ -74,13 +85,13 @@ const App: React.FC = () => {
         <Button onClick={handleClearOrReset}>
           {data.length ? "Clear Collection" : "Refetch Pokémons"}
         </Button>
-        <Search />
+        <Search onSearch={handleSearch} />
       </div>
 
       {status === "failed" && <p>Error: {error}</p>}
       <div className="pokemon-grid">
         {/* Always render existing data */}
-        {data.map((pokemon) => (
+        {filteredData.map((pokemon) => (
           <Pokemon
             onClick={() => handleExpand(pokemon)}
             name={pokemon.name}
