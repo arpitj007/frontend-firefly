@@ -9,6 +9,7 @@ import {
 } from "./redux/pokemonCollectionSlice";
 import { RootState, AppDispatch } from "./redux/store";
 import { add, clearSelected } from "./redux/currentlySelectedSlice";
+
 import "./App.scss";
 import Button from "./ui/Button";
 import Pokemon from "./components/Pokemon";
@@ -17,19 +18,19 @@ import Card from "./components/Card";
 
 const App: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
+
   const { data, status, error, hasMore } = useSelector(
     (state: RootState) => state.pokemonCollection
   );
   const { data: currentlySelectedData } = useSelector(
     (state: RootState) => state.currentlySelected
   );
-  const modal = useModal();
 
+  const modal = useModal();
   // Track when the end of the list is in view
   const { ref: endRef, inView: isEndInView } = useInView({
     threshold: 1.0,
   });
-
   // Local state to debounce lazy loading
   const [isFetching, setIsFetching] = useState(false);
 
